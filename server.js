@@ -38,23 +38,22 @@ const config = {
         }
     }
 }
-
-const filterablequery = "select auftrag,ItemId,C_LFDNR, convert(varchar, datum, 104) datum,"+
-    " convert(varchar,datum, 8) uhrzeit,WorkpieceID,c_Balgnr,convert(varchar,WorkpieceDurability,104) WorkpieceDurability,ManufacturedAt from v_basic_vulk_data " +
-    "where 1=1 and ";
+const filterablequery = "select orderNum,ItemId,counter, vulkdate,"+
+    "vexID,bdeID,convert(varchar,WorkpieceDurability,104) WorkpieceDurability,blankRubberManufactured from v_basic_vulk_data " +
+    "where ";
 
 
 
 const columnNames={
     itemID: "itemID",
-    counter: "c_lfdnr",
-    vexID: "WorkpieceID",
-    orderNum: "auftrag",
+    counter: "counter",
+    vexID: "vexID",
+    orderNum: "orderNum",
     itemIDSAP: "",
     partNumSAP: "",
-    vulkID: "c_balgnr",
+    vulkID: "bdeID",
     cageID: "",
-    vulkDate: "convert(date,datum)",
+    vulkDate: "convert(date,vulkDate)",
     blankRubberBestBefore: "WorkpieceDurability",
     blankRubberManufactured: "substring(ManufacturedAt,1,10)",
 }
@@ -93,7 +92,7 @@ function getData(req, res) {
             let s="("+                                    //(filters[k]+i or filters[k]+(i+1)) and (filters[k+1]+i or ...)...                                       
             Object.keys(params[k]).map(p=>{
                         if(params[k][p]!=""){             
-                            return (columnNames[k]+" like @"+k+p);
+                            return (columnNames[k]+" = @"+k+p);
                         }else{
                             return (columnNames[k]+" is null");
                         }
