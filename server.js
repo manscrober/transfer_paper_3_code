@@ -15,15 +15,6 @@ app.use((req,res,next)=>{
     next();
 })
 
-
-app.get('/docs/:docname',(req,res)=>{
-    var name=req.params.docname.replace(/[/]/g,"");
-    var tempFile="./docs/"+name;
-        fs.readFile(tempFile, (err,data)=>{
-            res.contentType('arraybuffer');
-            res.send(data);
-        });
-});
 app.get('/data/:name', (req,res)=>{
     (async function getTestData() {
         try {
