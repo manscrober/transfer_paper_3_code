@@ -1,8 +1,9 @@
 import * as express from 'express';
 import { Router, Response, Request } from 'express';
 import {QueryAdapterService} from '../business/query-adapter.service'
-import CoatRouter from './data/coatthickness'
-
+import ThicknessmeasurementsRouter from './data/thicknessmeasurements'
+import ProductsRouter from './data/products'
+import NMVRouter from './data/nmv'
 const queryAdapter: QueryAdapterService = new QueryAdapterService();
 
 class QueryRouter {
@@ -12,10 +13,9 @@ class QueryRouter {
 		this.router = express.Router();
 	}
 	public async routes() {
-		this.router.route('/productlist').get(async function (req: Request, res: Response) {
-			queryAdapter.execQuery(req.query,res,'v_basic_vulk_data');
-		});
-		this.router.use('/coatthickness',CoatRouter)
+		this.router.use('/products',ProductsRouter);
+		this.router.use('/coatthickness',ThicknessmeasurementsRouter);
+		this.router.use('/metalcontracts',NMVRouter);
 	}
 
 }

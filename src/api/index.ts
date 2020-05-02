@@ -1,18 +1,26 @@
 import * as express from 'express';
 import { Application, Router, Response, Request, NextFunction } from 'express';
+
+import AuthRouter from './auth';
+import Error from '../models/error';
+
 import QueryRouter from './data';
-import Error from '../models/error'
+import UserDB from '../core/userDB';
 
 export default function Routes(app: Application) {
 	const router: Router = express.Router();
+
+	
+	
+	// setup api endpoints
+	
 	app.use('/',function(req,res,next){
-		console.log(req.url);
+		console.log(req.method+" "+req.url+" requested by "+req.ip);
 		next();
 	})
-	// setup api endpoints
-	app.use('/', router);
+	app.use(AuthRouter);
+	
 	app.use('/api/data', QueryRouter);
-
 	// catch 404 and forward to error handler
 	app.use('/', function (req: Request, res: Response, next: NextFunction) {
 		var err = new Error(req.url+' Not Found');
@@ -29,5 +37,8 @@ export default function Routes(app: Application) {
 
 		// render the error page
 		res.status(err.status || 500);
+		res.send();
 	});
+	UserDB.initUserDB();
+	setInterval(UserDB.cleanUp,36000000);
 }

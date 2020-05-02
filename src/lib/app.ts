@@ -3,22 +3,17 @@ import { Application } from 'express';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as cors from 'cors';
+import {CorsOptions} from 'cors';
 
 import routes from '../api';
 
-const whitelist = ['http://localhost:4200','https://localhost:3000', 'http://hhl0069w.tiretech2.contiwan.com:4200'];
+const whitelist = ['https://localhost:4200','https://localhost:3000', 'https://hhl0069w.tiretech2.contiwan.com:4200'];
 
 class App {
-	corsOptions = {/*
-		origin: function (origin, callback) {
-			 if (whitelist.indexOf(origin) !== -1) {
-				 callback(null, true)
-			 } else {
-				 callback(new Error('Not allowed by CORS'))
-			 }
-		 },
-		 optionsSuccessStatus: 200
-	 */
+	corsOptions:CorsOptions = {
+		origin:whitelist,
+		credentials:true,
+		exposedHeaders:"Set-Cookie"
 	 }
 	constructor() {
 		this.app = express();
